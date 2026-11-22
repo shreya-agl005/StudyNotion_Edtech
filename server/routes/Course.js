@@ -48,6 +48,8 @@ const {
   updateCourseProgress,
   getProgressPercentage,
 } = require("../controllers/courseProgress")
+// Course Advisor (AI) Controller Import
+const { getCourseAdvice } = require("../controllers/CourseAdvisor")
 // Importing Middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middleware/auth")
 
@@ -101,5 +103,11 @@ router.post("/getCategoryPageDetails", categoryPageDetails)
 router.post("/createRating", auth, isStudent, createRating)
 router.get("/getAverageRating", getAverageRating)
 router.get("/getReviews", getAllRatingReview)
+
+// ********************************************************************************************************
+//                                      AI Course Advisor
+// ********************************************************************************************************
+// Any logged-in user can ask whether a course is right for them
+router.post("/courseAdvisor", auth, getCourseAdvice)
 
 module.exports = router

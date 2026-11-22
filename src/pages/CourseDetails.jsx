@@ -9,11 +9,13 @@ import ConfirmationModal from "../components/Common/ConfirmationModal"
 import Footer from "../components/Common/Footer"
 import RatingStars from "../components/Common/RatingStars"
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
+import CourseAdvisorModal from "../components/core/Course/CourseAdvisorModal"
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard"
 import { formatDate } from "../services/formatDate"
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
 import { BuyCourse } from "../services/operations/studentFeaturesAPI"
 import GetAvgRating from "../utils/avgRating"
+import { ACCOUNT_TYPE } from "../utils/constants"
 import Error from "./Error"
 
 function CourseDetails() {
@@ -31,6 +33,7 @@ function CourseDetails() {
   // Declear a state to save the course details
   const [response, setResponse] = useState(null)
   const [confirmationModal, setConfirmationModal] = useState(null)
+  const [advisorModal, setAdvisorModal] = useState(false)
   useEffect(() => {
     // Calling fetchCourseDetails fucntion to fetch the details
     ;(async () => {
@@ -116,6 +119,28 @@ function CourseDetails() {
     })
   }
 
+  // AI Course Advisor - needs login so the AI quota isn't used by anonymous visitors
+  const handleOpenAdvisor = () => {
+    if (token) {
+      setAdvisorModal(true)
+      return
+    }
+    setConfirmationModal({
+      text1: "You are not logged in!",
+      text2: "Please login to ask our AI advisor about this course.",
+      btn1Text: "Login",
+      btn2Text: "Cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(null),
+    })
+  }
+
+  // Show the advisor only to people who could still buy the course
+  const showAdvisorButton =
+    !user ||
+    (!studentsEnroled.includes(user?._id) &&
+      user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR)
+
   if (paymentLoading) {
     // console.log("payment loading")
     return (
@@ -178,6 +203,14 @@ function CourseDetails() {
                 Buy Now
               </button>
               <button className="blackButton">Add to Cart</button>
+              {showAdvisorButton && (
+                <button
+                  onClick={handleOpenAdvisor}
+                  className="rounded-md border border-yellow-50 px-[20px] py-[8px] font-semibold text-yellow-50"
+                >
+                  ✨ Is this course right for me?
+                </button>
+              )}
             </div>
           </div>
           {/* Courses Card */}
@@ -186,6 +219,7 @@ function CourseDetails() {
               course={response?.data?.courseDetails}
               setConfirmationModal={setConfirmationModal}
               handleBuyCourse={handleBuyCourse}
+              handleOpenAdvisor={handleOpenAdvisor}
             />
           </div>
         </div>
@@ -261,6 +295,13 @@ function CourseDetails() {
       </div>
       <Footer />
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
+      {advisorModal && (
+        <CourseAdvisorModal
+          courseId={course_id}
+          courseName={courseName}
+          setAdvisorModal={setAdvisorModal}
+        />
+      )}
     </>
   )
 }

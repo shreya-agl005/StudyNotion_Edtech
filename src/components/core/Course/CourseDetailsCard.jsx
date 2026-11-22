@@ -16,7 +16,12 @@ import { ACCOUNT_TYPE } from "../../../utils/constants"
 //   "Certificate of completion",
 // ]
 
-function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
+function CourseDetailsCard({
+  course,
+  setConfirmationModal,
+  handleBuyCourse,
+  handleOpenAdvisor,
+}) {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate()
@@ -86,6 +91,17 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
             {(!user || !course?.studentsEnroled.includes(user?._id)) && (
               <button onClick={handleAddToCart} className="blackButton">
                 Add to Cart
+              </button>
+            )}
+            {/* AI Course Advisor - hidden for enrolled students and instructors */}
+            {(!user ||
+              (!course?.studentsEnroled.includes(user?._id) &&
+                user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR)) && (
+              <button
+                onClick={handleOpenAdvisor}
+                className="rounded-md border border-yellow-50 px-[20px] py-[8px] font-semibold text-yellow-50 transition-all duration-200 hover:bg-richblack-800"
+              >
+                ✨ Is this course right for me?
               </button>
             )}
           </div>

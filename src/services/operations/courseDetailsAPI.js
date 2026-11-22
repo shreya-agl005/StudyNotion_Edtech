@@ -22,6 +22,7 @@ const {
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  COURSE_ADVISOR_API,
 } = courseEndpoints
 
 export const getAllCourses = async () => {
@@ -385,4 +386,22 @@ export const createRating = async (data, token) => {
   }
   toast.dismiss(toastId)
   return success
+}
+
+// AI Course Advisor: ask whether a course fits the user's background and goal
+export const getCourseAdvice = async (data, token) => {
+  let result = null
+  try {
+    const response = await apiConnector("POST", COURSE_ADVISOR_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Could not get advice")
+    }
+    result = response.data.data
+  } catch (error) {
+    console.log("COURSE_ADVISOR_API API ERROR............", error)
+    toast.error(error?.response?.data?.message || error.message)
+  }
+  return result
 }

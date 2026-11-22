@@ -2,6 +2,8 @@ const Category = require("../models/Category");
 const Course = require("../models/Course");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const Section = require("../models/Section");
+const SubSection = require("../models/Subsection");
 const bcrypt = require("bcryptjs");
 
 const demoCategories = [
@@ -83,6 +85,158 @@ const demoCourses = [
   },
 ];
 
+// Demo course outlines (lesson titles only, no videos).
+// Used by the course page's "Course Content" section and by the AI Course Advisor.
+// Durations are in seconds.
+const demoCourseContent = {
+  "650000000000000000000101": [
+    {
+      sectionName: "Web Foundations: HTML & CSS",
+      lessons: [
+        ["How the Web Works", 540],
+        ["HTML Structure and Semantic Tags", 900],
+        ["CSS Selectors, Box Model and Flexbox", 1200],
+        ["Responsive Design with Media Queries", 960],
+      ],
+    },
+    {
+      sectionName: "Modern JavaScript",
+      lessons: [
+        ["Variables, Functions and Scope", 1080],
+        ["DOM Manipulation and Events", 1140],
+        ["Promises, Async/Await and Fetch API", 1260],
+      ],
+    },
+    {
+      sectionName: "React.js",
+      lessons: [
+        ["Components, Props and JSX", 1020],
+        ["State and the useEffect Hook", 1320],
+        ["React Router and Single Page Apps", 960],
+        ["Global State with Redux Toolkit", 1380],
+      ],
+    },
+    {
+      sectionName: "Backend with Node, Express and MongoDB",
+      lessons: [
+        ["Building REST APIs with Express", 1260],
+        ["MongoDB and Mongoose Models", 1140],
+        ["Authentication with JWT", 1200],
+        ["Deploying a MERN App", 900],
+      ],
+    },
+  ],
+  "650000000000000000000102": [
+    {
+      sectionName: "Python Fundamentals",
+      lessons: [
+        ["Python Syntax, Variables and Data Types", 900],
+        ["Lists, Dictionaries and Loops", 1020],
+        ["Functions and Modules", 960],
+      ],
+    },
+    {
+      sectionName: "Data Analysis",
+      lessons: [
+        ["NumPy Arrays", 1080],
+        ["Data Cleaning with Pandas", 1320],
+        ["Visualization with Matplotlib", 1140],
+      ],
+    },
+    {
+      sectionName: "Machine Learning",
+      lessons: [
+        ["Introduction to Machine Learning", 840],
+        ["Linear and Logistic Regression", 1380],
+        ["Decision Trees and Random Forests", 1260],
+        ["Model Evaluation with Scikit-Learn", 1200],
+      ],
+    },
+  ],
+  "650000000000000000000103": [
+    {
+      sectionName: "Security Fundamentals",
+      lessons: [
+        ["The CIA Triad and Threat Landscape", 780],
+        ["Networking Basics: TCP/IP, Ports and Protocols", 1200],
+        ["Setting Up a Safe Practice Lab", 960],
+      ],
+    },
+    {
+      sectionName: "Reconnaissance and Scanning",
+      lessons: [
+        ["Information Gathering", 1020],
+        ["Network Scanning with Nmap", 1260],
+        ["Vulnerability Assessment", 1140],
+      ],
+    },
+    {
+      sectionName: "Defense",
+      lessons: [
+        ["Web Application Security Basics (OWASP Top 10)", 1320],
+        ["Wireless Network Security", 1080],
+        ["Firewalls and Hardening Systems", 1020],
+      ],
+    },
+  ],
+  "650000000000000000000104": [
+    {
+      sectionName: "AWS Core Services",
+      lessons: [
+        ["Cloud Computing Concepts", 720],
+        ["EC2, S3 and IAM", 1380],
+        ["VPC and Networking on AWS", 1260],
+      ],
+    },
+    {
+      sectionName: "Containers",
+      lessons: [
+        ["Docker Images and Containers", 1200],
+        ["Docker Compose for Multi-Container Apps", 1080],
+        ["Kubernetes Pods, Deployments and Services", 1440],
+      ],
+    },
+    {
+      sectionName: "DevOps Pipelines",
+      lessons: [
+        ["CI/CD Concepts", 840],
+        ["Building a Pipeline with GitHub Actions", 1260],
+        ["Monitoring and Logging", 960],
+      ],
+    },
+  ],
+};
+
+// Adds the demo outline to a demo course only if that course has no content yet,
+// so courses an instructor has already built are never touched.
+async function seedDemoCourseContent() {
+  for (const [courseId, sections] of Object.entries(demoCourseContent)) {
+    const course = await Course.findById(courseId);
+    if (!course || course.courseContent.length > 0) continue;
+
+    const sectionIds = [];
+    for (const section of sections) {
+      const subSections = await SubSection.insertMany(
+        section.lessons.map(([title, seconds]) => ({
+          title,
+          timeDuration: String(seconds),
+          description: `${title} - part of ${course.courseName}.`,
+          videoUrl: "",
+        }))
+      );
+      const createdSection = await Section.create({
+        sectionName: section.sectionName,
+        subSection: subSections.map((sub) => sub._id),
+      });
+      sectionIds.push(createdSection._id);
+    }
+
+    course.courseContent = sectionIds;
+    await course.save();
+    console.log(`[Seed] Added demo lessons to "${course.courseName}"`);
+  }
+}
+
 async function seedDatabase() {
   try {
     // Check if database is empty or needs categories
@@ -139,6 +293,9 @@ async function seedDatabase() {
       }
       console.log("[Seed] Demo courses populated successfully!");
     }
+
+    // Add lesson outlines to demo courses that don't have any yet
+    await seedDemoCourseContent();
   } catch (err) {
     console.error("[Seed] Error seeding demo data:", err.message);
   }
@@ -147,5 +304,6 @@ async function seedDatabase() {
 module.exports = {
   demoCategories,
   demoCourses,
+  demoCourseContent,
   seedDatabase,
 };
