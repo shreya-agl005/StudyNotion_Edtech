@@ -40,7 +40,7 @@ function ReviewSlider() {
   // console.log(reviews)
 
   return (
-    <div className="text-white w-11/12 max-w-maxContent">
+    <div className="text-richblack-5 w-11/12 max-w-maxContent">
       <div className="my-[50px] h-[184px] max-w-maxContentTab lg:max-w-maxContent">
         <Swiper
           slidesPerView={4}
@@ -70,7 +70,7 @@ function ReviewSlider() {
                     />
                     <div className="flex flex-col">
                       <h1 className="font-semibold text-richblack-5">{`${review?.user?.firstName} ${review?.user?.lastName}`}</h1>
-                      <h2 className="text-[12px] font-medium text-richblack-500">
+                      <h2 className="text-[12px] font-medium text-richblack-400">
                         {review?.course?.courseName}
                       </h2>
                     </div>

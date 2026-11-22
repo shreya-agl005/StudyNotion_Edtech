@@ -11,7 +11,7 @@ body {
 /* Firefox */
 * {
   scrollbar-width: auto;
-  scrollbar-color: #afb2bf;
+  scrollbar-color: #428475;
 }
 
 /* Chrome, Edge, and Safari */
@@ -20,11 +20,11 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: #000814;
+  background: #fff4e1;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #afb2bf;
+  background-color: #428475;
   border-radius: 10px;
   visibility: hidden;
 }
@@ -48,7 +48,7 @@ details > summary::-webkit-details-marker {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  border: 9px solid #f1f2ff;
+  border: 9px solid #428475;
   animation: spinner-bulqg1 0.8s infinite linear alternate,
     spinner-oaa3wk 1.6s infinite linear;
 }
@@ -61,9 +61,9 @@ details > summary::-webkit-details-marker {
   top: calc(50% - 257.05px / 2 - 47.47px);
   background: linear-gradient(
     123.77deg,
-    #8a2be2 -6.46%,
-    #ffa500 59.04%,
-    #f8f8ff 124.53%
+    #428475 -6.46%,
+    #89d7b7 59.04%,
+    #fff4e1 124.53%
   );
   opacity: 0.2;
   filter: blur(34px);
@@ -78,9 +78,9 @@ details > summary::-webkit-details-marker {
   border-radius: 100%;
   background: linear-gradient(
     118.19deg,
-    #1fa2ff -3.62%,
-    #12d8fa 50.44%,
-    #a6ffcb 104.51%
+    #1a312c -3.62%,
+    #428475 50.44%,
+    #89d7b7 104.51%
   );
   opacity: 0.2;
   filter: blur(34px);
@@ -90,11 +90,11 @@ details > summary::-webkit-details-marker {
   border: 2px solid;
   border-image-slice: 1;
   border-width: 2px;
-  border-image-source: linear-gradient(to right bottom, #ffffff38, #ffffff00);
+  border-image-source: linear-gradient(to right bottom, #42847566, #42847500);
   background: linear-gradient(
     111.93deg,
-    rgba(14, 26, 45, 0.24) -1.4%,
-    rgba(17, 30, 50, 0.38) 104.96%
+    rgba(137, 215, 183, 0.18) -1.4%,
+    rgba(66, 132, 117, 0.1) 104.96%
   );
   /* backdrop-filter: blur(26px); */
 }
@@ -201,13 +201,13 @@ details > summary::-webkit-details-marker {
 
 /* For conditional coloring of icons in dashboard sidebar */
 .active-icon {
-  fill: #ffd60a !important;
-  color: #ffd60a !important;
+  fill: #1a312c !important;
+  color: #1a312c !important;
 }
 
 .inactive-icon {
-  fill: #838894;
-  color: #838894;
+  fill: #36594f;
+  color: #36594f;
 }
 
 /* Buttons */
@@ -233,13 +233,13 @@ details > summary::-webkit-details-marker {
 /* Swiper CSS Ends */
 
 .blackButton {
-  @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
+  @apply cursor-pointer rounded-md bg-brand-tealdeep px-[20px] py-[8px] font-semibold text-brand-cream;
 }
 .lable-style {
   @apply text-[14px] text-richblack-5;
 }
 .form-style {
-  @apply rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none;
+  @apply rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-brand-teal/40 placeholder:text-richblack-400 focus:outline-none;
 }
 .section_heading {
   @apply text-2xl font-bold text-richblack-5 lg:text-4xl;

@@ -58,9 +58,9 @@ const TimelineSection = () => {
         <div className="relative w-fit h-fit shadow-blue-200 shadow-[0px_0px_30px_0px]">
           <div className="absolute lg:left-[50%] lg:bottom-0 lg:translate-x-[-50%] lg:translate-y-[50%] bg-caribbeangreen-700 flex lg:flex-row flex-col text-white uppercase py-5 gap-4 lg:gap-0 lg:py-10 ">
             {/* Section 1 */}
-            <div className="flex gap-5 items-center lg:border-r border-caribbeangreen-300 px-7 lg:px-14">
+            <div className="flex gap-5 items-center lg:border-r border-caribbeangreen-25 px-7 lg:px-14">
               <h1 className="text-3xl font-bold w-[75px]">10</h1>
-              <h1 className="text-caribbeangreen-300 text-sm w-[75px]">
+              <h1 className="text-caribbeangreen-25 text-sm w-[75px]">
                 Years experiences
               </h1>
             </div>
@@ -68,7 +68,7 @@ const TimelineSection = () => {
             {/* Section 2 */}
             <div className="flex gap-5 items-center lg:px-14 px-7">
               <h1 className="text-3xl font-bold w-[75px]">250</h1>
-              <h1 className="text-caribbeangreen-300 text-sm w-[75px]">
+              <h1 className="text-caribbeangreen-25 text-sm w-[75px]">
                 types of courses
               </h1>
             </div>
@@ -77,7 +77,7 @@ const TimelineSection = () => {
           <img
             src={TimeLineImage}
             alt="timelineImage"
-            className="shadow-white shadow-[20px_20px_0px_0px] object-cover h-[400px] lg:h-fit"
+            className="shadow-brand-mint shadow-[20px_20px_0px_0px] object-cover h-[400px] lg:h-fit"
           />
         </div>
       </div>

@@ -60,7 +60,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           </div>
           <div className="flex flex-col">
             <p>{courseEntireData?.courseName}</p>
-            <p className="text-sm font-semibold text-richblack-500">
+            <p className="text-sm font-semibold text-richblack-400">
               {completedLectures?.length} / {totalNoOfLectures}
             </p>
           </div>
@@ -101,7 +101,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                     <div
                       className={`flex gap-3  px-5 py-2 ${
                         videoBarActive === topic._id
-                          ? "bg-yellow-200 font-semibold text-richblack-800"
+                          ? "bg-yellow-200 font-semibold text-richblack-900"
                           : "hover:bg-richblack-900"
                       } `}
                       key={i}
